@@ -1,15 +1,28 @@
 import * as React from "react"
-import { Link } from "gatsby"
-import { container, heading, navLinks, navLinkItem, navLinkText} from "./layout.module.css"
+import { Link, useStaticQuery, graphql} from "gatsby"
+import { container, heading, navLinks, navLinkItem, navLinkText, siteTitle} from "./layout.module.css"
+
+
 
 const Layout = ({pageTitle, children}) => {
+    const dataFromServer = useStaticQuery(graphql`query {
+            site {
+                siteMetadata {
+                    title
+                }
+            }
+        }`
+    )
+    
     return (
         <div className={container}>
-            <title> {pageTitle} </title>
+            <title>{pageTitle} | {dataFromServer.site.siteMetadata.title} </title>
+            <header className={siteTitle}>{dataFromServer.site.siteMetadata.title}</header>
             <nav>
                 <ul className={navLinks}>
                     <li className={navLinkItem}><Link className={navLinkText} to="/">Home</Link></li>
                     <li className={navLinkItem}><Link className={navLinkText} to="/about">About</Link></li>
+                    <li className={navLinkItem}><Link className={navLinkText} to="/blog">Blog</Link></li>
                     <li className={navLinkItem}><Link className={navLinkText} to="/contacts">Contacts</Link></li>
                 </ul>
             </nav>
